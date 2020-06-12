@@ -15,7 +15,7 @@ class SiswaController extends Controller
     public function index()
     {
        // $siswa = DB::table('students')->get();
-        $siswa = \App\Student::all();
+        $siswa = \App\Siswa::all();
         return view('siswa.index', ['siswa' => $siswa]);
     }
 

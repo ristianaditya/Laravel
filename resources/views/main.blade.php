@@ -30,6 +30,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{'/siswa'}}">Data Siswa</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{'/semuasiswa'}}">Semua Siswa</a>
+            </li>
             </ul>
         </div>
         </div>
