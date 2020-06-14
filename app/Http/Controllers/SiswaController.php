@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Symfony\Component\VarDumper\VarDumper;
 
 class SiswaController extends Controller
 {
@@ -15,7 +16,9 @@ class SiswaController extends Controller
     public function index()
     {
        // $siswa = DB::table('students')->get();
-        $siswa = \App\Siswa::all();
+        $siswa =  DB::table('siswa')
+        ->Join('jurusans', 'siswa.id_jurusan', '=', 'jurusans.id_jurusan')
+        ->get();
         return view('siswa.index', ['siswa' => $siswa]);
     }
 
@@ -26,7 +29,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view('tambahSiswa');
     }
 
     /**
@@ -37,7 +40,14 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::table('siswa')->insert([
+            'nama' => $request->nama,
+            'nrp' => $request->nrp,
+            'email' => $request->email,
+            'id_jurusan' => $request->jurusan,
+
+        ]);  
+        return redirect('/siswa');
     }
 
     /**
@@ -59,7 +69,12 @@ class SiswaController extends Controller
      */
     public function edit($id)
     {
-        //
+        // mengambil data siswa berdasarkan id yang dipilih
+        $siswa = DB::table('siswa')
+        ->Join('jurusans', 'siswa.id_jurusan', '=', 'jurusans.id_jurusan')
+        ->where('id_siswa',$id)->get();
+        return view('editsiswa', ['data' => $siswa]);
+        //return $siswa;
     }
 
     /**
@@ -71,7 +86,12 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::table('siswa')->where('id_siswa', $id)->update([
+            'nama' => $request->nama,
+            'nrp' => $request->nrp,
+            'email' => $request->email
+        ]);
+        return redirect('/siswa')->with('status', 'Data Siswa Berhasil diubah!');
     }
 
     /**
@@ -82,6 +102,7 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('siswa')->where('id_siswa',$id)->delete();
+        return redirect('/siswa');
     }
 }
